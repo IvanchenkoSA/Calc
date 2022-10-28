@@ -9,7 +9,7 @@ class CalculatorModel {
 
     StringBuilder inputStr = new StringBuilder();
 
-    private State state;
+    private State state = State.firstArgInput;
 
     private enum State {
         firstArgInput,
@@ -18,14 +18,6 @@ class CalculatorModel {
     }
 
     private int actionSelected;
-
-
-    public CalculatorModel(){
-        state = State.firstArgInput;
-    }
-
-
-
 
     public void onNumberPressed (int buttonId){
 
