@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
         idToOperator.put(R.id.divide, '/');
         idToOperator.put(R.id.multiply, '*');
         idToOperator.put(R.id.getAnswer, '=');
+        idToOperator.put(R.id.cleans, 'c');
 
         int[] numbers = new int[]{
             R.id.btn_zero,
@@ -71,8 +72,8 @@ public class MainActivity extends AppCompatActivity {
         btnCleans.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                calculator.onCancelPressed(view.getId());
-//                inputField.setText(calculator.getText());
+                calculator.onClearPressed((Character) idToOperator.get(view.getId()));
+                inputField.setText(calculator.getValue());
             }
         });
 
@@ -81,17 +82,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 calculator.onNumberClick((Character) idToNumber.get(view.getId()));
-                inputField.setText(calculator.getValue());
+                inputField.setText(calculator.getString());
             }
         };
 
         View.OnClickListener actionButtonClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                calculator.onOperatorClick(
-                        (Character) idToOperator.get(view.getId())
-                );
-                inputField.setText(calculator.getValue());
+                calculator.onOperatorClick((Character) idToOperator.get(view.getId()));
+                inputField.setText(calculator.getString());
             }
         };
 
