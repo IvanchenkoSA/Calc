@@ -14,7 +14,8 @@ public class MainActivity extends AppCompatActivity {
     private CalculatorModel2 calculator;
 
     private TextView inputField;
-    private Button btnCleans;
+    private Button btnClear;
+    private  Button getAnswer;
 
     private HashMap idToNumber = new HashMap<Integer, Character>();
     private HashMap idToOperator = new HashMap<Integer, Character>();
@@ -40,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
         idToOperator.put(R.id.divide, '/');
         idToOperator.put(R.id.multiply, '*');
         idToOperator.put(R.id.getAnswer, '=');
-        idToOperator.put(R.id.cleans, 'c');
+        idToOperator.put(R.id.clear, 'c');
 
         int[] numbers = new int[]{
             R.id.btn_zero,
@@ -59,21 +60,28 @@ public class MainActivity extends AppCompatActivity {
                 R.id.multiply,
                 R.id.add,
                 R.id.subtract,
-                R.id.getAnswer
         };
 
-        btnCleans = findViewById(R.id.cleans);// fixme clear
+        getAnswer = findViewById(R.id.getAnswer);
+        btnClear = findViewById(R.id.clear);// fixme clear
         inputField = findViewById(R.id.input_field);
-
         calculator = new CalculatorModel2();
 
         inputField.setText(calculator.getValue());
 
-        btnCleans.setOnClickListener(new View.OnClickListener() {
+        btnClear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 calculator.onClearPressed((Character) idToOperator.get(view.getId()));
                 inputField.setText(calculator.getValue());
+            }
+        });
+
+        getAnswer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                calculator.onOperatorEquals((Character) idToOperator.get(R.id.getAnswer));
+                inputField.setText(calculator.getString());
             }
         });
 
@@ -90,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 calculator.onOperatorClick((Character) idToOperator.get(view.getId()));
-                inputField.setText(calculator.getString());
+                inputField.setText(calculator.getValue());
             }
         };
 
