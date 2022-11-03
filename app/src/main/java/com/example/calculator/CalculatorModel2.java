@@ -1,5 +1,7 @@
 package com.example.calculator;
 
+import java.text.DecimalFormat;
+
 public class CalculatorModel2 {
 
     private double value = 0.0;
@@ -7,7 +9,9 @@ public class CalculatorModel2 {
     private char op;
     private boolean initial = true;
 
-    private StringBuilder builder = new StringBuilder();
+
+    DecimalFormat d = new DecimalFormat("#.####");
+    private final StringBuilder builder = new StringBuilder();
 
     void onNumberClick(char number) {
         if (number < '0' || number > '9') {
@@ -20,6 +24,7 @@ public class CalculatorModel2 {
     void onOperatorClick(char operator) {
         double number = Double.parseDouble(builder.toString());
         if (initial) {
+            op = operator;
             value = number;
             initial = false;
             builder.delete(0, builder.length());
@@ -41,28 +46,35 @@ public class CalculatorModel2 {
                 value /= Double.parseDouble(builder.toString());
                 builder.delete(0, builder.length());
             }
+
         }
+
     }
 
     void onOperatorEquals(char opEquals) {
-        if (opEquals == '=') {
+        if (opEquals == '=' && builder.length() > 0) {
             num2 = Double.parseDouble(builder.toString());
             builder.delete(0, builder.length());
             switch (op) {
                 case '+':
                     builder.append(value + num2);
+                    value = Double.parseDouble(builder.toString());
                     break;
                 case '-':
                     builder.append(value - num2);
+                    value = Double.parseDouble(builder.toString());
                     break;
                 case '*':
                     builder.append(value * num2);
+                    value = Double.parseDouble(builder.toString());
                     break;
                 case '/':
                     builder.append(value / num2);
+                    value = Double.parseDouble(builder.toString());
                     break;
             }
         }
+        return;
     }
 
     void onClearPressed(char btnCleans) {
@@ -71,6 +83,7 @@ public class CalculatorModel2 {
             value = 0.0;
             num2 = 0.0;
             initial = true;
+            op = ' ';
         }
     }
 
@@ -79,6 +92,6 @@ public class CalculatorModel2 {
     }
 
     String getValue() {
-        return Double.toString(value);
+        return d.format(value);
     }
 }

@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 calculator.onOperatorEquals((Character) idToOperator.get(R.id.getAnswer));
-                inputField.setText(calculator.getString());
+                inputField.setText(calculator.getValue());
             }
         });
 
