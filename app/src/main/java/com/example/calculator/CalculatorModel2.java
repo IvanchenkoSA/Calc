@@ -22,6 +22,10 @@ public class CalculatorModel2 {
 
 
     void onOperatorClick(char operator) {
+        if (builder.length() == 0){
+            op = operator;
+            return;
+        }
         double number = Double.parseDouble(builder.toString());
         if (initial) {
             op = operator;
@@ -46,9 +50,7 @@ public class CalculatorModel2 {
                 value /= Double.parseDouble(builder.toString());
                 builder.delete(0, builder.length());
             }
-
         }
-
     }
 
     void onOperatorEquals(char opEquals) {
