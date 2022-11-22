@@ -1,24 +1,24 @@
 package com.example.calculator;
 
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 
-public class CalculatorModel2 {
+    public class CalculatorModel2 {
 
-    private double value = 0.0;
-    private double num2;
-    private char op;
-    private boolean initial = true;
+        private BigDecimal value = BigDecimal.ZERO;
+        private BigDecimal num2 = BigDecimal.ZERO;
+        private char op;
+        private boolean initial = true;
 
+        DecimalFormat d = new DecimalFormat("#.####");
+        private final StringBuilder builder = new StringBuilder();
 
-    DecimalFormat d = new DecimalFormat("#.####");
-    private final StringBuilder builder = new StringBuilder();
-
-    void onNumberClick(char number) {
-        if (number < '0' || number > '9') {
-            throw new IllegalStateException(number + " not a number");
+        void onNumberClick(char number) {
+            if (number < '0' || number > '9') {
+                throw new IllegalStateException(number + " not a number");
+            }
+            builder.append(number);
         }
-        builder.append(number);
-    }
 
 
     void onOperatorClick(char operator) {
@@ -26,7 +26,7 @@ public class CalculatorModel2 {
             op = operator;
             return;
         }
-        double number = Double.parseDouble(builder.toString());
+        BigDecimal number = new BigDecimal(builder.toString());
         if (initial) {
             op = operator;
             value = number;
@@ -35,19 +35,19 @@ public class CalculatorModel2 {
         } else {
             if (operator == '+') {
                 op = '+';
-                value += Double.parseDouble(builder.toString());
+                value.add(new BigDecimal(builder.toString()));
                 builder.delete(0, builder.length());
             } else if (operator == '-') {
                 op = '-';
-                value -= number;
+                value.subtract(new BigDecimal(builder.toString()));
                 builder.delete(0, builder.length());
             } else if (operator == '*') {
                 op = '*';
-                value *= Double.parseDouble(builder.toString());
+                value.multiply(new BigDecimal(builder.toString()));
                 builder.delete(0, builder.length());
             } else if (operator == '/') {
                 op = '/';
-                value /= Double.parseDouble(builder.toString());
+                value.divide(new BigDecimal(builder.toString()));
                 builder.delete(0, builder.length());
             }
         }
@@ -55,24 +55,24 @@ public class CalculatorModel2 {
 
     void onOperatorEquals(char opEquals) {
         if (opEquals == '=' && builder.length() > 0) {
-            num2 = Double.parseDouble(builder.toString());
+            num2 = new BigDecimal(builder.toString());
             builder.delete(0, builder.length());
             switch (op) {
                 case '+':
-                    builder.append(value + num2);
-                    value = Double.parseDouble(builder.toString());
+                    builder.append(value.add(num2));
+                    value = new BigDecimal(builder.toString());
                     break;
                 case '-':
-                    builder.append(value - num2);
-                    value = Double.parseDouble(builder.toString());
+                    builder.append(value.subtract(num2));
+                    value = new BigDecimal(builder.toString());
                     break;
                 case '*':
-                    builder.append(value * num2);
-                    value = Double.parseDouble(builder.toString());
+                    builder.append(value.multiply(num2));
+                    value = new BigDecimal(builder.toString());
                     break;
                 case '/':
-                    builder.append(value / num2);
-                    value = Double.parseDouble(builder.toString());
+                    builder.append(value.divide(num2));
+                    value = new BigDecimal(builder.toString());
                     break;
             }
         }
@@ -82,8 +82,8 @@ public class CalculatorModel2 {
     void onClearPressed(char btnCleans) {
         if (btnCleans == 'c') {
             builder.delete(0, builder.length());
-            value = 0.0;
-            num2 = 0.0;
+            value = BigDecimal.ZERO;
+            num2 = BigDecimal.ZERO;
             initial = true;
             op = ' ';
         }

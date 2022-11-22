@@ -17,7 +17,6 @@
         android:background="@drawable/input_text"
         android:enabled="false"
         android:gravity="right"
-        android:maxLength="9"
         android:minHeight="68dp"
         android:paddingTop="12dp"
         android:paddingEnd="10dp"
