@@ -1,9 +1,11 @@
 package com.example.calculator;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 
-    public class CalculatorModel2 {
+public class CalculatorModel2 {
 
         private BigDecimal value = BigDecimal.ZERO;
         private BigDecimal num2 = BigDecimal.ZERO;
@@ -34,24 +36,42 @@ import java.text.DecimalFormat;
             builder.delete(0, builder.length());
         } else {
             if (operator == '+') {
+                if (builder.length() > 12){
+                    BigDecimal s = new BigDecimal(builder.toString());
+                    builder.delete(0, builder.length());
+                    builder.append(format(s));
+                    value = new BigDecimal(builder.toString());
+                }
                 op = '+';
-                value.add(new BigDecimal(builder.toString()));
+                value = value.add(new BigDecimal(builder.toString()));
                 builder.delete(0, builder.length());
             } else if (operator == '-') {
                 op = '-';
-                value.subtract(new BigDecimal(builder.toString()));
+                value = value.subtract(new BigDecimal(builder.toString()));
                 builder.delete(0, builder.length());
             } else if (operator == '*') {
+                if (builder.length() > 12){
+                    BigDecimal s = new BigDecimal(builder.toString());
+                    builder.delete(0, builder.length());
+                    builder.append(format(s));
+                    value = new BigDecimal(builder.toString());
+                }
                 op = '*';
-                value.multiply(new BigDecimal(builder.toString()));
+                value = value.multiply(new BigDecimal(builder.toString()));
                 builder.delete(0, builder.length());
             } else if (operator == '/') {
                 op = '/';
-                value.divide(new BigDecimal(builder.toString()));
+                value = value.divide(new BigDecimal(builder.toString()));
                 builder.delete(0, builder.length());
             }
         }
     }
+
+        String format(BigDecimal x) {
+            NumberFormat formatter = new DecimalFormat("0.0E0");
+            formatter.setMinimumFractionDigits(0);
+            return formatter.format(x);
+        }
 
     void onOperatorEquals(char opEquals) {
         if (opEquals == '=' && builder.length() > 0) {
@@ -60,6 +80,12 @@ import java.text.DecimalFormat;
             switch (op) {
                 case '+':
                     builder.append(value.add(num2));
+                    if (builder.length() > 12){
+                        BigDecimal s = new BigDecimal(builder.toString());
+                        builder.delete(0, builder.length());
+                        builder.append(format(s));
+                        value = new BigDecimal(builder.toString());
+                    }
                     value = new BigDecimal(builder.toString());
                     break;
                 case '-':
@@ -68,11 +94,20 @@ import java.text.DecimalFormat;
                     break;
                 case '*':
                     builder.append(value.multiply(num2));
+                    if (builder.length() > 12){
+                        BigDecimal s = new BigDecimal(builder.toString());
+                        builder.delete(0, builder.length());
+                        builder.append(format(s));
+                        value = new BigDecimal(builder.toString());
+                    }
                     value = new BigDecimal(builder.toString());
                     break;
                 case '/':
-                    builder.append(value.divide(num2));
-                    value = new BigDecimal(builder.toString());
+                    if (num2.equals(BigDecimal.ZERO)){
+                        value = new BigDecimal(BigInteger.ZERO);
+                        return;
+                    }
+                    value = new BigDecimal(builder.append(value.divide(num2, 3, BigDecimal.ROUND_CEILING)).toString());
                     break;
             }
         }
@@ -94,6 +129,6 @@ import java.text.DecimalFormat;
     }
 
     String getValue() {
-        return d.format(value);
+        return value.toString();
     }
 }
