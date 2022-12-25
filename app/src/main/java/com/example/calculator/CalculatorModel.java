@@ -136,7 +136,7 @@ class CalculatorModel {
 
 
     public void onCancelPressed(int id){
-        if (id == R.id.cleans) {
+        if (id == R.id.clear) {
             state = State.firstArgInput;
             inputStr.setLength(0);
         }
