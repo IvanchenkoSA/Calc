@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
         inputField = findViewById(R.id.input_field);
         calculator = new CalculatorModel2();
 
-       // inputField.setText(calculator.getValue());
+        inputField.setText(calculator.getValue());
 
         btnClear.setOnClickListener(new View.OnClickListener() {
             @Override
