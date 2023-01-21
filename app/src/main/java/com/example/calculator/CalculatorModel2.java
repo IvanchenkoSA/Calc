@@ -34,10 +34,10 @@ public class CalculatorModel2 {
     }
 
     // Обработка операций
-    void onOperatorClick(char operator) {
+    boolean onOperatorClick(char operator) {
         if (operand.length() == 0) {
             op = operator;
-            return;
+            return true;
         }
         BigDecimal number = new BigDecimal(operand.toString());
         if (initial) {
@@ -45,17 +45,14 @@ public class CalculatorModel2 {
             result = number;
             initial = false;
             operand.delete(0, operand.length());
+            return false;
         } else {
             if (op == '+') {
-                if (result.toString().length() >= 12) {
-                    BigDecimal s = new BigDecimal(operand.toString());
-                    operand.delete(0, operand.length());
-                    operand.append(format(s));
-                    result = new BigDecimal(operand.toString());
-                } else if (result.toString().length() < 12) {
+                 {
                     result = result.add(new BigDecimal(operand.toString()));
                     operand.delete(0, operand.length());
                     op = operator;
+                    initial = false;
                 }
             } else if (op == '-') {
                 if (result.toString().length() >= 12) {
@@ -85,6 +82,7 @@ public class CalculatorModel2 {
                 operand.delete(0, operand.length());
                 op = operator;
             }
+            return true;
         }
     }
 
@@ -96,11 +94,6 @@ public class CalculatorModel2 {
             switch (op) {
                 case '+':
                     operand.append(result.add(num2));
-                    if (operand.length() >= 12) {
-                        BigDecimal s = new BigDecimal(operand.toString());
-                        operand.append(format(s));
-                        result = new BigDecimal(operand.toString());
-                    }
                     result = new BigDecimal(operand.toString());
                     break;
                 case '-':
@@ -151,8 +144,12 @@ public class CalculatorModel2 {
         return operand.toString();
     }
 
-    String getResult() {
-        return result.toString();
+    String getResult(boolean expFormat) {
+            if (result.toString().length() >= 12 && expFormat) {
+                return format(result);
+            } else {
+                return result.toString();
+            }
     }
 }
 

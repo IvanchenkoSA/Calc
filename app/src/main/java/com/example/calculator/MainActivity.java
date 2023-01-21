@@ -67,13 +67,13 @@ public class MainActivity extends AppCompatActivity {
         inputField = findViewById(R.id.input_field);
         calculator = new CalculatorModel2();
 
-        inputField.setText(calculator.getResult());
+        inputField.setText(calculator.getResult(true));
 
         btnClear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 calculator.onClearPressed((Character) idToOperator.get(view.getId()));
-                inputField.setText(calculator.getResult());
+                inputField.setText(calculator.getResult(true));
             }
         });
 
@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 calculator.onOperatorEquals((Character) idToOperator.get(R.id.getAnswer));
-                inputField.setText(calculator.getResult());
+                inputField.setText(calculator.getResult(true));
             }
         });
 
@@ -97,8 +97,8 @@ public class MainActivity extends AppCompatActivity {
         View.OnClickListener actionButtonClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                calculator.onOperatorClick((Character) idToOperator.get(view.getId()));
-                inputField.setText(calculator.getResult());
+                boolean expFormat = calculator.onOperatorClick((Character) idToOperator.get(view.getId()));
+                inputField.setText(calculator.getResult(expFormat));
             }
         };
 
