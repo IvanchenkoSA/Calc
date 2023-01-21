@@ -6,13 +6,10 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
 public class CalculatorModel2 {
-    private BigDecimal value = BigDecimal.ZERO;
-    private BigDecimal subValue = BigDecimal.ZERO;
-    private BigDecimal num2 = BigDecimal.ZERO;
+    private BigDecimal result = BigDecimal.ZERO;
     private char op;
     private boolean initial = true;
-    private final StringBuilder builder = new StringBuilder();
-    DecimalFormat d = new DecimalFormat("#.####");
+    private final StringBuilder operand = new StringBuilder();
 
     // Обработка нажатий чисел
     void onNumberClick(char number) {
@@ -23,7 +20,7 @@ public class CalculatorModel2 {
 
         }
 
-        builder.append(number);
+        operand.append(number);
 
     }
 
@@ -38,54 +35,54 @@ public class CalculatorModel2 {
 
     // Обработка операций
     void onOperatorClick(char operator) {
-        if (builder.length() == 0) {
+        if (operand.length() == 0) {
             op = operator;
             return;
         }
-        BigDecimal number = new BigDecimal(builder.toString());
+        BigDecimal number = new BigDecimal(operand.toString());
         if (initial) {
             op = operator;
-            value = number;
+            result = number;
             initial = false;
-            builder.delete(0, builder.length());
+            operand.delete(0, operand.length());
         } else {
             if (op == '+') {
-                if (value.toString().length() >= 12) {
-                    BigDecimal s = new BigDecimal(builder.toString());
-                    builder.delete(0, builder.length());
-                    builder.append(format(s));
-                    value = new BigDecimal(builder.toString());
-                } else if (value.toString().length() < 12) {
-                    value = value.add(new BigDecimal(builder.toString()));
-                    builder.delete(0, builder.length());
+                if (result.toString().length() >= 12) {
+                    BigDecimal s = new BigDecimal(operand.toString());
+                    operand.delete(0, operand.length());
+                    operand.append(format(s));
+                    result = new BigDecimal(operand.toString());
+                } else if (result.toString().length() < 12) {
+                    result = result.add(new BigDecimal(operand.toString()));
+                    operand.delete(0, operand.length());
                     op = operator;
                 }
             } else if (op == '-') {
-                if (value.toString().length() >= 12) {
-                    BigDecimal s = new BigDecimal(builder.toString());
-                    builder.delete(0, builder.length());
-                    builder.append(format(s));
-                    value = new BigDecimal(builder.toString());
-                } else if (value.toString().length() < 12) {
-                    value = value.subtract(new BigDecimal(builder.toString()));
-                    builder.delete(0, builder.length());
+                if (result.toString().length() >= 12) {
+                    BigDecimal s = new BigDecimal(operand.toString());
+                    operand.delete(0, operand.length());
+                    operand.append(format(s));
+                    result = new BigDecimal(operand.toString());
+                } else if (result.toString().length() < 12) {
+                    result = result.subtract(new BigDecimal(operand.toString()));
+                    operand.delete(0, operand.length());
                     op = operator;
                 }
             } else if (op == '*') {
-                if (value.toString().length() >= 12) {
-                    BigDecimal s = new BigDecimal(value.toString());
-                    builder.delete(0, builder.length());
-                    builder.append(format(s));
-                    value = value.multiply(new BigDecimal(builder.toString()));
-                    builder.delete(0, builder.length());
-                } else if (value.toString().length() < 12) {
-                    value = value.multiply(new BigDecimal(builder.toString()));
-                    builder.delete(0, builder.length());
+                if (result.toString().length() >= 12) {
+                    BigDecimal s = new BigDecimal(result.toString());
+                    operand.delete(0, operand.length());
+                    operand.append(format(s));
+                    result = result.multiply(new BigDecimal(operand.toString()));
+                    operand.delete(0, operand.length());
+                } else if (result.toString().length() < 12) {
+                    result = result.multiply(new BigDecimal(operand.toString()));
+                    operand.delete(0, operand.length());
                     op = operator;
                 }
             } else if (op == '/') {
-                value = value.divide(new BigDecimal(builder.toString()));
-                builder.delete(0, builder.length());
+                result = result.divide(new BigDecimal(operand.toString()));
+                operand.delete(0, operand.length());
                 op = operator;
             }
         }
@@ -93,49 +90,49 @@ public class CalculatorModel2 {
 
     // Обработка кнопки '='
     void onOperatorEquals(char opEquals) {
-        if (opEquals == '=' && builder.length() > 0) {
-            num2 = new BigDecimal(builder.toString());
-            builder.delete(0, builder.length());
+        if (opEquals == '=' && operand.length() > 0) {
+            BigDecimal num2 = new BigDecimal(operand.toString());
+            operand.delete(0, operand.length());
             switch (op) {
                 case '+':
-                    builder.append(value.add(num2));
-                    if (builder.length() >= 12) {
-                        BigDecimal s = new BigDecimal(builder.toString());
-                        builder.append(format(s));
-                        value = new BigDecimal(builder.toString());
+                    operand.append(result.add(num2));
+                    if (operand.length() >= 12) {
+                        BigDecimal s = new BigDecimal(operand.toString());
+                        operand.append(format(s));
+                        result = new BigDecimal(operand.toString());
                     }
-                    value = new BigDecimal(builder.toString());
+                    result = new BigDecimal(operand.toString());
                     break;
                 case '-':
-                    builder.append(value.subtract(num2));
-                    if (builder.length() >= 12) {
-                        BigDecimal s = new BigDecimal(builder.toString());
-                        builder.delete(0, builder.length());
-                        builder.append(format(s));
-                        value = new BigDecimal(builder.toString());
+                    operand.append(result.subtract(num2));
+                    if (operand.length() >= 12) {
+                        BigDecimal s = new BigDecimal(operand.toString());
+                        operand.delete(0, operand.length());
+                        operand.append(format(s));
+                        result = new BigDecimal(operand.toString());
                     }
-                        value = new BigDecimal(builder.toString());
+                        result = new BigDecimal(operand.toString());
                     break;
                 case '*':
-                    builder.append(value.multiply(num2));
-                    if (builder.length() >= 12) {
-                        BigDecimal s = new BigDecimal(builder.toString());
-                        builder.delete(0, builder.length());
-                        builder.append(format(s));
-                        value = new BigDecimal(builder.toString());
+                    operand.append(result.multiply(num2));
+                    if (operand.length() >= 12) {
+                        BigDecimal s = new BigDecimal(operand.toString());
+                        operand.delete(0, operand.length());
+                        operand.append(format(s));
+                        result = new BigDecimal(operand.toString());
                     }
-                    value = new BigDecimal(builder.toString());
+                    result = new BigDecimal(operand.toString());
                     break;
                 case '/':
                     if (num2.equals(BigDecimal.ZERO)) {
-                        value = new BigDecimal(BigInteger.ZERO);
+                        result = new BigDecimal(BigInteger.ZERO);
                         return;
                     }
-                    value = new BigDecimal(builder.append(value.divide(num2, 2, BigDecimal.ROUND_CEILING)).toString());
+                    result = new BigDecimal(operand.append(result.divide(num2, 2, BigDecimal.ROUND_CEILING)).toString());
                     break;
             }
 //            initial = true;
-            builder.delete(0, builder.length());
+            operand.delete(0, operand.length());
         }
         return;
     }
@@ -143,20 +140,19 @@ public class CalculatorModel2 {
     // Обработка кнопки 'С' - очистить
     void onClearPressed(char btnCleans) {
         if (btnCleans == 'c') {
-            builder.delete(0, builder.length());
-            value = BigDecimal.ZERO;
-            num2 = BigDecimal.ZERO;
+            operand.delete(0, operand.length());
+            result = BigDecimal.ZERO;
             initial = true;
             op = ' ';
         }
     }
 
-    String getString() {
-        return builder.toString();
+    String getOperand() {
+        return operand.toString();
     }
 
-    String getValue() {
-        return value.toString();
+    String getResult() {
+        return result.toString();
     }
 }
 
